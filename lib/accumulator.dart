@@ -15,7 +15,8 @@ class AccumulatorWidget extends StatelessWidget {
       children: [
         Text(
           textScaler: const TextScaler.linear(4),
-          appState.acc.toString(),
+          appState.acc.toStringAsFixed(
+              appState.acc.truncateToDouble() == appState.acc ? 0 : 2),
         ),
         const SizedBox(height: 20),
         ...NumberField().columnElements(context),
@@ -34,14 +35,14 @@ class NumberField {
           width: 0.6 * MediaQuery.of(context).size.width,
           child: TextField(
             onChanged: (numberStr) =>
-                {appState.updateNumberField(int.parse(numberStr))},
+                {appState.updateNumberField(double.parse(numberStr))},
             maxLines: 1,
             textAlign: TextAlign.center,
             decoration:
                 const InputDecoration(labelText: "Please record a number"),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9,.]'))
             ],
           )),
       const SizedBox(height: 10),

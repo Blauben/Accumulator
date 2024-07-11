@@ -19,13 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.deepPurple,
-              iconTheme: IconThemeData(color: Colors.white, size: 30),
-              centerTitle: true,
-              elevation: 15,
-              titleTextStyle: TextStyle(color: Colors.white, fontSize: 30)
-          ),
+        appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.deepPurple,
+            iconTheme: IconThemeData(color: Colors.white, size: 30),
+            centerTitle: true,
+            elevation: 15,
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 30)),
       ),
       home: const MyHomePage(),
     );
@@ -62,7 +61,7 @@ class MyHomePageState extends State<MyHomePage> with RestorationMixin {
       value: _restorableAppState.value,
       child: Scaffold(
         appBar: AppBar(
-            title: const Text("Accumulator"),
+          title: const Text("Accumulator"),
           leading: const Icon(Icons.numbers),
           toolbarHeight: 80,
         ),
@@ -82,8 +81,8 @@ class MyHomePageState extends State<MyHomePage> with RestorationMixin {
 }
 
 class AppState extends ChangeNotifier {
-  int acc = 0;
-  int numberField = 0;
+  double acc = 0;
+  double numberField = 0;
 
   AppState() {
     loadAcc();
@@ -91,25 +90,25 @@ class AppState extends ChangeNotifier {
 
   void loadAcc() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    acc = prefs.getInt("acc") ?? 0;
+    acc = prefs.getDouble("acc") ?? 0;
     notifyListeners();
   }
 
   void increment() async {
     acc += numberField;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("acc", acc);
+    prefs.setDouble("acc", acc);
     notifyListeners();
   }
 
   void decrement() async {
     acc -= numberField;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("acc", acc);
+    prefs.setDouble("acc", acc);
     notifyListeners();
   }
 
-  void updateNumberField(int number) {
+  void updateNumberField(double number) {
     numberField = number;
     notifyListeners();
   }
@@ -117,7 +116,7 @@ class AppState extends ChangeNotifier {
   void resetAcc() async {
     acc = 0;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("acc", acc);
+    prefs.setDouble("acc", acc);
     notifyListeners();
   }
 }
@@ -131,7 +130,7 @@ class RestorableAppState extends RestorableChangeNotifier<AppState> {
   @override
   AppState fromPrimitives(Object? data) {
     var state = AppState();
-    state.acc = data as int? ?? 0;
+    state.acc = data as double? ?? 0;
     return state;
   }
 
